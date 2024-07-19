@@ -1,0 +1,1 @@
+This is an app for my learning. This is an app for a computer service in which we enter basic data about the client and the equipment. We can mark the order and save it, or delete it after entering the password. The application is based on a JSON file that formats the phone and name
