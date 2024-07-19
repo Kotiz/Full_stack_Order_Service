@@ -1,0 +1,35 @@
+@import './base.css';
+
+#app {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+  background-color:rgb(241, 241, 241);
+}
+
+
+label {
+  background-color: rgb(134, 206, 248);
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+@media print {
+  .page {
+    margin: 0;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    min-height: initial;
+    box-shadow: initial;
+    background: initial;
+    page-break-after: always;
+  }
+  #buttonVisibility {
+    visibility: hidden;
+  }
+}
