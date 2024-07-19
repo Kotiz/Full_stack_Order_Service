@@ -26,6 +26,25 @@
                 </footer>
             </div>
         </div>
+        
+        <!-- Modal do wyświetlenia opisu usterki-->
+        <div class="modal" :class="{ 'is-active': showDataCaseContent }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Opis usterki</p>
+                    <button class="delete btn btn-primary mb-2" aria-label="close" @click="showDataCaseContent = false"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field" v-if="selectedFormIndex !== null">
+                        <label class="label m-2"> {{ forms[selectedFormIndex].inputDataCaseContent }}</label>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button btn btn-primary m-2" @click="showDataCaseContent = false">Zamknij</button>
+                </footer>
+            </div>
+        </div>
 
         <div>
             <table class="table table-bordered table-striped">
@@ -51,8 +70,11 @@
                         <td style="width: 150px;">{{ form.inputDataNameClient }}</td>
                         <td style="width: 120px;">{{ form.inputDataPhoneNumber }} / {{ form.inputDataPhoneNumberFull }}</td>
                         <td>{{ form.inputDataDevice }}</td>
-                        <td style="width: 100px;">{{ form.inputDataDeviceEquipment }}</td>
-                        <td>{{ form.inputDataCaseContent }}</td>
+                        <td style="width: 100px;">{{ truncateText(form.inputDataDeviceEquipment, 20) }}</td>
+                        <td>
+                             {{ truncateText(form.inputDataCaseContent, 15) }}
+                            <button @click.stop="showDataCaseContentModal(index)" class="btn btn-danger end-50">Pokaż więcej</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -76,8 +98,10 @@ export default {
             forms: [],
             selectedRows: [],
             selectAll: false,
-            showDeleteConfirmation: false, // Dodajemy pole do kontrolowania widoczności modalu
+            showDeleteConfirmation: false,
+            showDataCaseContent: false,
             password: '',
+            selectedFormIndex: null, // Dodane pole do przechowywania indeksu wybranego wpisu
         };
     },
     methods: {
@@ -160,6 +184,16 @@ export default {
             } catch (error) {
                 console.error('Error:', error);
             }
+        },
+        showDataCaseContentModal(index) {
+            this.selectedFormIndex = index;
+            this.showDataCaseContent = true;
+        },
+        truncateText(text, length) {
+            if (text.length > length) {
+                return text.substring(0, length) + '...';
+            }
+            return text;
         },
     },
     mounted() {
