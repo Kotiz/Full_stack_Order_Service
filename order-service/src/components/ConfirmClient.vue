@@ -18,7 +18,7 @@
           Dane klienta:
         </div>
         <div class="col text-uppercase fw-bold">
-          {{ store.inputDataNameClient }}
+          {{ displayData.inputDataNameClient }}
         </div>
       </div>
       <div class="row align-items-center pb-1 border border-top-1">
@@ -61,7 +61,13 @@
   import { defineProps } from 'vue';
   import { store } from '@/stores/store.ts';
   
-  const props = defineProps(['inputDataDevice','inputDataNameClient','inputDateOfRecived','inputDataDeviceEquipment']);
+  const props = defineProps({
+  displayData: {
+    type: Object,
+    required: true
+  }
+});
+// console.log(displayData);
   </script>
   
   <style scoped>

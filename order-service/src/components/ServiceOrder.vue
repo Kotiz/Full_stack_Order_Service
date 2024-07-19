@@ -1,13 +1,14 @@
 <template>
   <form @submit.prevent="submitForm">
     <div class="row g-3">
-      <div class="col-sm-3">
-        <label for="date" class="form-label rounded-pill text-bg-light badge">Data przyjęcia</label>
+      <div class="col-sm-2">
+        <label for="date" class="form-label rounded-pill text-bg-light badge"> Data :</label>
+        <!-- <input type="date" v-model="displayData.inputDateOfRecived" class="form-control" id="date"> -->
         <input type="date" v-model="displayData.inputDateOfRecived" class="form-control" id="date">
       </div>
       <div class="col-sm-4">
         <label for="name" class="form-label rounded-pill text-bg-light badge">Imię i nazwisko</label>
-        <input type="text" v-model="displayData.inputDataNameClient" class="form-control" id="name">
+        <input type="text" v-model="displayData.inputDataNameClient"  class="form-control" id="name">
       </div>
       <div class="col-sm">
         <label for="phone" class="form-label rounded-pill text-bg-light badge">Telefon</label>
@@ -15,11 +16,11 @@
       </div>
       <div class="col-sm-1">
         <label for="release" class="form-label rounded-pill text-bg-light badge">Do wyd.</label>
-        <input type="text" class="form-control" id="release" readonly :value="store.releaseInfo">
+        <input type="text" class="form-control" id="release" readonly :value="store.releaseInfo" disabled>
       </div>
       <div class="col-sm-1">
         <label for="info" class="form-label rounded-pill text-bg-light badge">Poinfo.</label>
-        <input type="text" class="form-control" id="info" readonly :value="store.info">
+        <input type="text" class="form-control" id="info" readonly :value="store.info" disabled>
       </div>
     </div>
     <div class="row g-3">
@@ -39,12 +40,12 @@
       </div>
       <div class="col-sm-3">
         <label for="price" class="form-label rounded-pill text-bg-light badge">Cena</label>
-        <input type="text" class="form-control" id="price" readonly :value="store.price">
+        <input type="text" class="form-control" id="price" readonly :value="store.price" disabled>
       </div>
       <div class="col-sm-3" style="padding-top: 3%;">
         <div>
-          <label for="formNumber" class="form-label rounded-pill text-bg-light badge">Numer Formularza</label>
-          <span style="font-size: x-large;">{{ store.formNumber }}</span>
+          <label for="formNumber" class="form-label rounded-pill text-bg-light badge">Numer Formularza : </label>
+          <span style="font-size:larger"> {{ store.formNumber }}  </span>
         </div>
       </div>
     </div>
@@ -57,28 +58,59 @@
     <div class="row g-3">
       <div class="col-sm">
         <label for="tasks" class="badge rounded-pill text-bg-light">Wykonane czynności</label>
-        <textarea class="form-control" id="tasks" rows="8" maxlength="400"></textarea>
+        <textarea class="form-control" id="tasks" rows="8" maxlength="400" disabled></textarea>
       </div>
     </div>
     <div class="pt-2 pb-2">
       <button type="submit" id="buttonVisibility" class="d-print-none btn btn-primary">Zapisz i wydrukuj stronę</button>
     </div>
   </form>
-  <ConfirmClient />
+   <!-- Przekazywanie danych do komponentu ConfirmClient -->
+  <ConfirmClient :displayData="displayData" />
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { store } from '@/stores/store.ts';
 import ConfirmClient from "@/components/ConfirmClient.vue";
+import { computed } from 'vue';
+
+// Funkcja do obliczania bieżącej daty w formacie yyyy-mm-dd
+function getCurrentDate() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Miesiące są 0-indeksowane
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Inicjalizacja bieżącej daty
+onMounted(() => {
+  displayData.value.inputDateOfRecived = getCurrentDate();
+});
 
 const displayData = ref({
   inputDateOfRecived: '',
   inputDataNameClient: '',
+  inputDataNameClientFull: '',
   inputDataPhoneNumber: '',
   inputDataDevice: '',
   inputDataDeviceEquipment: '',
   inputDataCaseContent: ''
+});
+
+// Funkcja do formatowania daty na dd/mm/yy
+function formatDate(date) {
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Miesiące są 0-indeksowane
+  const year = date.getFullYear().toString().slice(-2); // Pobierz ostatnie 2 cyfry roku
+  return `${day}/${month}/${year}`;
+}
+
+// Oblicz bieżącą datę w formacie dd/mm/yy
+const currentDate = computed(() => {
+  const now = new Date();
+  return formatDate(now);
 });
 
 watch(() => displayData.value.inputDataPhoneNumber, (newVal) => {

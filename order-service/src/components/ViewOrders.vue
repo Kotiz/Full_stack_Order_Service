@@ -47,7 +47,7 @@
         </div>
 
         <div>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th><input type="checkbox" @change="toggleSelectAll" v-model="selectAll"></th>
@@ -72,8 +72,14 @@
                         <td>{{ form.inputDataDevice }}</td>
                         <td style="width: 100px;">{{ truncateText(form.inputDataDeviceEquipment, 20) }}</td>
                         <td>
-                             {{ truncateText(form.inputDataCaseContent, 15) }}
-                            <button @click.stop="showDataCaseContentModal(index)" class="btn btn-danger end-50">Pokaż więcej</button>
+                            <div class="containerButtonShowMore">
+                                <div class="boxShowMore">
+                                    {{ truncateText(form.inputDataCaseContent, 15) }}
+                                </div>
+                                <div class="boxShowMore">
+                                    <button @click.stop="showDataCaseContentModal(index)" class="btn btn-outline-secondary btn-sm">więcej...</button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -189,12 +195,10 @@ export default {
             this.selectedFormIndex = index;
             this.showDataCaseContent = true;
         },
-        truncateText(text, length) {
-            if (text.length > length) {
-                return text.substring(0, length) + '...';
-            }
-            return text;
-        },
+        truncateText(text, maxLength) {
+    if (!text) return ''; // Sprawdzenie, czy text jest undefined lub null
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  },
     },
     mounted() {
         this.fetchForms();
@@ -282,5 +286,17 @@ textarea:focus {
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+.containerButtonShowMore {
+  display: flex;
+  gap: 3px; /* Odstęp między elementami */
+  /* background-color: #3689f5; */
+}
+
+.boxShowMore {
+  /* background-color: #fcfafa; */
+  padding: 0px;
+  border: 0px solid #ccc;
+  flex: 1; /* Opcjonalnie, aby elementy były równej szerokości */
 }
 </style>
