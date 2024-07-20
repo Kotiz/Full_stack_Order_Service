@@ -1,0 +1,224 @@
+input[type=text]:focus {
+    background-color: rgb(230, 242, 247);
+  }
+  textarea {
+    resize: none;
+  }
+  textarea:focus {
+    background-color: rgb(230, 242, 247);
+  }
+
+  input[type=text]:focus {
+    background-color: rgb(230, 242, 247);
+}
+textarea {
+    resize: none;
+}
+textarea:focus {
+    background-color: rgb(230, 242, 247);
+}
+
+                                                                                /* Service Order */
+
+/* Input ISSUE (Zgłaszana usterka) */
+.fixed-size-textarea {
+    resize: none; /* Blokuje zmianę rozmiaru */
+    overflow-y: hidden; /* Ukrywa pasek przewijania */
+}
+
+
+/* ViewOrders.vue */
+
+.modal {
+    display: none;
+}
+
+.modal.is-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999; /* Zwiększ z-index, jeśli to konieczne */
+}
+
+.modal-card {
+    width: 400px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-card-head {
+    background-color: #f5f5f5;
+    padding: 12px 20px;
+    border-bottom: 1px solid #eaeaea;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-card-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.modal-card-body {
+    padding: 20px;
+}
+
+.modal-card-foot {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #eaeaea;
+    border-radius: 0 0 6px 6px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.delete {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.containerButtonShowMore {
+  display: flex;
+  gap: 3px; /* Odstęp między elementami */
+  /* background-color: #3689f5; */
+}
+
+.boxShowMore {
+  /* background-color: #fcfafa; */
+  padding: 0px;
+  border: 0px solid #ccc;
+  flex: 1; /* Opcjonalnie, aby elementy były równej szerokości */
+}
+
+                                                                            /* ConfirmClient.vue */
+
+/* dotted line and scissors */
+
+  .cut-line-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px; /* Odstęp poniżej linii cięcia */
+}
+
+.cut-line {
+    border: none;
+    border-top: 1px dashed black;
+    margin: 0;
+}
+
+.scissors-icon {
+    position: absolute;
+    top: -10px; /* Pozycjonowanie ikony nożyczek */
+    left: 0;
+    transform: translateY(-10%);
+    transform: rotate(90deg);
+    width: 20px; /* Rozmiar ikony nożyczek */
+    height: auto;
+}
+/* footer ConfirmClient */
+
+.styled-rowFooter {
+    padding-bottom: 1rem; /* Przestrzeń wewnętrzna dolna */
+  }
+  
+  .styled-logo {
+    display: flex;
+    justify-content: center; /* Wyrównanie poziome */
+    align-items: left; /* Wyrównanie pionowe */
+  }
+  .styled-logo img {
+    max-width: 50%; /* Upewnia się, że obrazek nie wychodzi poza kolumnę */
+    height: auto; /* Utrzymuje proporcje obrazka */
+  }
+  .styled-infoFooter {
+    display: flex;
+    flex-direction: column; /* Ustawienie elementów w kolumnie */
+    gap: 0.1rem; /* Odstępy między elementami p */
+  }
+  /* Stylizacja dla każdego elementu p */
+.styled-infoFooter p {
+    margin: 0; /* Usunięcie domyślnego marginesu */
+    font-size: 0.875rem; /* Rozmiar czcionki */
+    line-height: 1; /* Wysokość linii */
+  }
+
+/* Style dla wydruku */
+@media print {
+    .cut-line {
+        border-top: 1px dashed black;
+    }
+    .scissors-icon {
+        display: block; /* Upewnij się, że ikona nożyczek jest widoczna */
+    }
+    .styled-rowFooter {
+        display: flex; /* Zapewnia, że kolumny są obok siebie */
+        flex-direction: row; /* Ustawia kolumny w wierszu */
+        padding-bottom: 0; /* Usuń lub dostosuj przestrzeń wewnętrzną dolną w druku */
+      }
+    
+      .styled-logo,
+      .styled-infoFooter {
+        flex: 1; /* Zapewnia, że obie kolumny zajmują równą szerokość */
+        padding: 0; /* Usuń dodatkowe wypełnienia */
+      }
+    
+      .styled-logo img {
+        max-width: 100%; /* Upewnia się, że obrazek jest dostosowany do dostępnej szerokości */
+      }
+}
+
+/* tables for client confirm */
+
+.styled-row {
+    /* Przykładowa szerokość i marginesy dla wiersza */
+    width: 100%;
+    margin: 1px 0;
+  }
+  
+  .styled-label {
+    /* Stylizacja dla etykiety */
+    font-size: 14px; /* Rozmiar czcionki */
+    font-weight: bold; /* Pogrubienie czcionki */
+    color: #333; /* Kolor czcionki */
+    text-align: left; /* Wyrównanie tekstu do lewej */
+  }
+  
+  .styled-value {
+    /* Stylizacja dla wartości */
+    font-size: 14px; /* Rozmiar czcionki */
+    color: #555; /* Kolor czcionki */
+    text-align: left; /* Wyrównanie tekstu do lewej */
+  }
+  
+  /* Opcjonalne dostosowanie kolumny */
+  .col {
+    padding-left: 15px; /* Dostosowanie wcięcia */
+    padding-right: 15px; /* Dostosowanie wcięcia */
+  }
+  
+  /* Opcjonalne dostosowanie dla granic */
+  .border-top-1 {
+    border-top-width: 1px;
+  }

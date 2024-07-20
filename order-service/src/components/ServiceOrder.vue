@@ -1,50 +1,50 @@
 <template>
   <form @submit.prevent="submitForm">
     <div class="row g-3">
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <label for="date" class="form-label rounded-pill text-bg-light badge"> Data :</label>
         <!-- <input type="date" v-model="displayData.inputDateOfRecived" class="form-control" id="date"> -->
-        <input type="date" v-model="displayData.inputDateOfRecived" class="form-control" id="date">
+        <input type="date" v-model="displayData.inputDateOfRecived" class="form-control form-control-sm" id="date">
       </div>
       <div class="col-sm-4">
         <label for="name" class="form-label rounded-pill text-bg-light badge">Imię i nazwisko</label>
-        <input type="text" v-model="displayData.inputDataNameClient"  class="form-control" id="name">
+        <input type="text" v-model="displayData.inputDataNameClient"  class="form-control form-control-sm" id="name">
       </div>
-      <div class="col-sm">
+      <div class="col-sm-3">
         <label for="phone" class="form-label rounded-pill text-bg-light badge">Telefon</label>
-        <input type="text" v-model="displayData.inputDataPhoneNumber" class="form-control" id="phone">
+        <input type="text" v-model="displayData.inputDataPhoneNumber" class="form-control form-control-sm" id="phone">
       </div>
       <div class="col-sm-1">
         <label for="release" class="form-label rounded-pill text-bg-light badge">Do wyd.</label>
-        <input type="text" class="form-control" id="release" readonly :value="store.releaseInfo" disabled>
+        <input type="text" class="form-control form-control-sm" id="release" readonly :value="store.releaseInfo" disabled>
       </div>
       <div class="col-sm-1">
         <label for="info" class="form-label rounded-pill text-bg-light badge">Poinfo.</label>
-        <input type="text" class="form-control" id="info" readonly :value="store.info" disabled>
+        <input type="text" class="form-control form-control-sm" id="info" readonly :value="store.info" disabled>
       </div>
     </div>
     <div class="row g-3">
       <div class="col-sm">
         <label for="device" class="form-label rounded-pill text-bg-light badge">Urządzenie</label>
-        <input type="text" v-model="displayData.inputDataDevice" class="form-control" id="device">
+        <input type="text" v-model="displayData.inputDataDevice" class="form-control form-control-sm" id="device">
       </div>
       <div class="col-sm">
         <label for="equipment" class="form-label rounded-pill text-bg-light badge">Dodatkowe wyposażenie</label>
-        <input type="text" v-model="displayData.inputDataDeviceEquipment" class="form-control" id="equipment">
+        <input type="text" v-model="displayData.inputDataDeviceEquipment" class="form-control form-control-sm" id="equipment">
       </div>
     </div>
     <div class="row g-3">
       <div class="col-sm-5">
         <label for="password" class="form-label rounded-pill text-bg-light badge">Hasło</label>
-        <input type="text" class="form-control" id="password">
+        <input type="text" class="form-control form-control-sm" id="password">
       </div>
       <div class="col-sm-3">
         <label for="price" class="form-label rounded-pill text-bg-light badge">Cena</label>
-        <input type="text" class="form-control" id="price" readonly :value="store.price" disabled>
+        <input type="text" class="form-control  form-control-sm" id="price" readonly :value="store.price" disabled>
       </div>
       <div class="col-sm-3" style="padding-top: 3%;">
         <div>
-          <label for="formNumber" class="form-label rounded-pill text-bg-light badge">Numer Formularza : </label>
+          <label for="formNumber" class="form-label rounded-pill text-bg-light badge ">Numer Formularza : </label>
           <span style="font-size:larger"> {{ store.formNumber }}  </span>
         </div>
       </div>
@@ -52,13 +52,30 @@
     <div class="row g-3">
       <div class="col-sm">
         <label for="issue" class="badge rounded-pill text-bg-light">Zgłaszana usterka</label>
-        <textarea class="form-control" id="issue" rows="8" maxlength="400" v-model="displayData.inputDataCaseContent" required></textarea>
+        <textarea
+          class="form-control form-control-sm fixed-size-textarea" 
+          id="issue" 
+          rows="12" 
+          maxlength="600" 
+          v-model="displayData.inputDataCaseContent"
+          @input="validateInput"
+          required 
+          ></textarea>
+        <small class="text-muted"> pozostało {{ remainingCharacters }} znaków / </small>
+        <small class="text-muted"> pozostało {{ remainingLines }} linii</small>
       </div>
     </div>
     <div class="row g-3">
       <div class="col-sm">
         <label for="tasks" class="badge rounded-pill text-bg-light">Wykonane czynności</label>
-        <textarea class="form-control" id="tasks" rows="8" maxlength="400" disabled></textarea>
+        <textarea 
+          class="form-control form-control-sm fixed-size-textarea" 
+          id="issue" 
+          rows="10" 
+          maxlength="600" 
+          disabled
+          required
+          ></textarea>
       </div>
     </div>
     <div class="pt-2 pb-2">
@@ -98,6 +115,49 @@ const displayData = ref({
   inputDataDeviceEquipment: '',
   inputDataCaseContent: ''
 });
+
+
+
+const displayCaseData = ref({
+  inputDataCaseContent: '',
+});
+
+const maxCharacters = 600;
+const maxLines = 12;
+const remainingCharacters = ref(maxCharacters);
+const remainingLines = ref(maxLines);
+
+watch(() => displayCaseData.value.inputDataCaseContent, (newVal) => {
+  updateCharacterCount();
+  updateLineCount();
+});
+
+function updateCharacterCount() {
+  remainingCharacters.value = maxCharacters - displayCaseData.value.inputDataCaseContent.length;
+}
+
+function updateLineCount() {
+  const lines = displayCaseData.value.inputDataCaseContent.split('\n').length;
+  remainingLines.value = maxLines - lines;
+}
+
+function validateInput(event) {
+  const content = event.target.value;
+  const lines = content.split('\n').length;
+
+  if (content.length > maxCharacters) {
+    event.target.value = content.slice(0, maxCharacters);
+  }
+
+  if (lines > maxLines) {
+    const truncatedContent = content.split('\n').slice(0, maxLines).join('\n');
+    event.target.value = truncatedContent;
+  }
+
+  displayCaseData.value.inputDataCaseContent = event.target.value;
+  updateCharacterCount();
+  updateLineCount();
+}
 
 // Funkcja do formatowania daty na dd/mm/yy
 function formatDate(date) {
@@ -185,13 +245,5 @@ fetchForms(); // Pobierz listę formularzy przy montowaniu komponentu
 </script>
 
 <style scoped>
-input[type=text]:focus {
-  background-color: rgb(230, 242, 247);
-}
-textarea {
-  resize: none;
-}
-textarea:focus {
-  background-color: rgb(230, 242, 247);
-}
+@import "@/styles/main.css"
 </style>
